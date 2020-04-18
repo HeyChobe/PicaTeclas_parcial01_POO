@@ -1,11 +1,8 @@
 package com.CRCI.x00204119;
 
 import javax.swing.*;
-import java.util.Scanner;
 
 public class Main {
-
-    static Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
         Empresa empresa = null;
@@ -64,11 +61,13 @@ public class Main {
                     break;
 
                 case 4:
+                    nombre=JOptionPane.showInputDialog(null, "Empleado: ");
+                    empresa.conocerSalario(nombre);
                     break;
 
                 case 5:
+                    CalculadoraImpuestos.mostrarTotales();
                     break;
-
                 case 0: salir=true;
                     break;
 
