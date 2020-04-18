@@ -4,9 +4,7 @@ public class PlazaFija extends Empleado {
     private int extension;
 
     public PlazaFija(String nombre, String puesto, double salario, int extension){
-        this.nombre=nombre;
-        this.puesto=puesto;
-        this.salario=salario;
+        super(nombre, puesto, salario);
         this.extension=extension;
     }
 
@@ -16,5 +14,23 @@ public class PlazaFija extends Empleado {
 
     public void setExtension(int extension) {
         this.extension = extension;
+    }
+
+    public String mostrarDocs(){
+        String mensaje="";
+        for(Documento d : documentos){
+            mensaje+=d.getNombre()+"/"+d.getNumero();
+        }
+        return mensaje;
+    }
+
+    @Override
+    public String toString() {
+        return "PlazaFija{" +
+                "extension=" + extension +
+                ", nombre='" + nombre + '\'' +
+                ", puesto='" + puesto + '\'' +
+                ", salario=" + salario + "documentos=" + mostrarDocs() +
+                '}';
     }
 }
