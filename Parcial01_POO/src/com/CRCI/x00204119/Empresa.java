@@ -26,19 +26,12 @@ public class Empresa {
     }
 
     public void mostrarEmpleados(){
-        for(Empleado aux : Planilla){
+        for(Empleado aux : Planilla)
             JOptionPane.showMessageDialog(null, aux);
-        }
     }
-    public void conocerSalario(String nombre){
-        Empleado empleado=null;
-        for(Empleado e: Planilla){
-            if(e.getNombre().equals(nombre))
-                empleado=e;
-        }
-        double sueldoReal= CalculadoraImpuestos.calcularPago(empleado);
-        JOptionPane.showConfirmDialog(null,"La cantidad de dinero que se le debera pagar a "+
-                nombre +" es $:"+sueldoReal);
+
+    public ArrayList<Empleado> getPlanilla() {
+        return Planilla;
     }
 }
 

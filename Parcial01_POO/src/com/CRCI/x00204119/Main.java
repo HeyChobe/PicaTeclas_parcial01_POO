@@ -1,6 +1,7 @@
 package com.CRCI.x00204119;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -62,7 +63,14 @@ public class Main {
 
                 case 4:
                     nombre=JOptionPane.showInputDialog(null, "Empleado: ");
-                    empresa.conocerSalario(nombre);
+                    ArrayList<Empleado> miEmpleado = new ArrayList<>();
+                    miEmpleado= empresa.getPlanilla();
+                    for(Empleado e: miEmpleado)
+                        if(e.getNombre().equals(nombre)){
+                            double sueldoReal= CalculadoraImpuestos.calcularPago(e);
+                            JOptionPane.showConfirmDialog(null,"La cantidad de dinero que se le debera pagar a "+
+                                    nombre +" es $:"+sueldoReal);
+                        }
                     break;
 
                 case 5:

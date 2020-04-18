@@ -18,16 +18,16 @@ public class CalculadoraImpuestos {
             Afp=empleado.getSalario()*0.625; totalAFP+=Afp;
             Restante=empleado.getSalario()-Isss-Afp;
             // Primer bloque, el empleado no paga renta
-            if(Restante>=0 && Restante<=472)
+            if(Restante>=0.1 && Restante<=472)
                 SalarioReal -= Restante;
             // Segundo bloque de impuesto sobre la renta
 
-            else if(Restante>=472 && Restante <=895) {
+            else if(Restante>=472.01 && Restante <=895.24) {
                 Renta= 0.1*(Restante-472) + 17.67; totalRenta+=Renta;
                 SalarioReal-=Restante-Renta;
             // Tercer bloque de impuesto sobre la renta
 
-            } else if(Restante>=895 && Restante<=2038) {
+            } else if(Restante>=895.25 && Restante<=2038.10) {
                 Renta= 0.2*(Restante-895.24)+ 60;  totalRenta+=Renta;
                 SalarioReal -= Restante-Renta;
             //Cuarto bloque no es necesario colocar otro if
