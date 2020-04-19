@@ -19,47 +19,26 @@ public class Main {
         double salario=0;
         char op='0';
 
-        nombreEmpresa=JOptionPane.showInputDialog(null, "Nombre de la empresa");
-        empresa = new Empresa(nombreEmpresa);
+        do {
+            nombreEmpresa = JOptionPane.showInputDialog(null, "Nombre de la empresa");
+            try {
+                if (nombreEmpresa.equals("")) throw new EmptyInputException("Error!NO ha ingresado datos ");
+                empresa = new Empresa(nombreEmpresa);
+            } catch (EmptyInputException ex) {
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }while (nombreEmpresa.equals(""));
+
 
         do{
             op=JOptionPane.showInputDialog(null, menu).charAt(0);
             switch (op){
                 case '1':
-                        nombre = JOptionPane.showInputDialog(null, "Nombre", "Ej: Carlos Roberto Cortez Amaya");
-                        numero = JOptionPane.showInputDialog(null, "DUI", "06096092");
-
-                        String[] opciones = {"Servicio Profesional", "Plaza Fija"};
-                        int aux = JOptionPane.showOptionDialog(null, "Tipo de trabajador", "Agregar empleado", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-
-                    try {
-                        if (aux == 0) {
-                            puesto = JOptionPane.showInputDialog(null, "Puesto de trabajo");
-                            salario = Double.parseDouble(JOptionPane.showInputDialog(null, "Salario en dólares ($)", "Ej: 400"));
-                            if(salario<0) throw new NegativeNumberException("Salario no admitido");
-
-                            mesesContrato = Integer.parseInt(JOptionPane.showInputDialog(null, "Meses de contrato"));
-                            documento = new Documento(nombre, numero);
-                            empleado = new ServicioProfesional(nombre, puesto, salario, mesesContrato);
-                            empleado.addDocumento(documento);
-                            empresa.addEmpleado(empleado);
-
-                        } else {
-                            puesto = JOptionPane.showInputDialog(null, "Puesto de trabajo");
-                            salario = Double.parseDouble(JOptionPane.showInputDialog(null, "Salario en dólares ($)", "Ej: 400"));
-                            if(salario<0) throw new NegativeNumberException("Salario no admitido");
-
-                            extension = Integer.parseInt(JOptionPane.showInputDialog(null, "Extensión del contrato"));
-                            documento = new Documento(nombre, numero);
-                            empleado = new PlazaFija(nombre, puesto, salario, extension);
-                            empleado.addDocumento(documento);
-                            empresa.addEmpleado(empleado);
-                        }
-                    }catch (NumberFormatException|NegativeNumberException ex){
-                        JOptionPane.showMessageDialog(null, "Error! Ingrese un valor numérico");
-                    }
+                    //documento=agregarDocumento();
+                    empleado=agregarEmpleado();
+                    empleado.addDocumento(agregarDocumento(empleado.getNombre()));
+                    empresa.addEmpleado(empleado);
                     break;
-
                 case '2':
                     try {
                         boolean existe = false;
@@ -70,22 +49,19 @@ public class Main {
                         nombre = JOptionPane.showInputDialog(null, "Empleado a despedir");
                         miEmpleado = empresa.getPlanilla();
 
-                        for (Empleado emp : miEmpleado) {
-                            if (emp.getNombre().equals(nombre)) {
+                        for (Empleado emp : miEmpleado)
+                            if (emp.getNombre().equals(nombre))
                                 existe = true;
-                            }
-                        }
-                        if (!existe) {
-                            throw new InputErrorException("El empleado no existe");
-                        }
+
+                        if (!existe)
+                            throw new InputErrorException("Empleado no eiste");
+
                         empresa.quitEmpleado(nombre);
                         empleado.removeDocumento(nombre);
-
                     }
                     catch (InputErrorException|EmptyListException ex){
                         JOptionPane.showMessageDialog(null, ex);
                     }
-
                     break;
 
                 case '3':
@@ -95,10 +71,8 @@ public class Main {
 
                         miEmpleado = empresa.getPlanilla();
 
-                        for (Empleado emp : miEmpleado) {
+                        for (Empleado emp : miEmpleado)
                             JOptionPane.showMessageDialog(null, emp);
-                        }
-
                     }
                     catch (EmptyListException ex){
                         JOptionPane.showMessageDialog(null,ex);
@@ -111,24 +85,34 @@ public class Main {
                             throw new EmptyListException("Aún no has contratado empleados");
 
                         nombre = JOptionPane.showInputDialog(null, "Empleado: ");
+                        if(nombre.equals(""))
+                            throw new EmptyInputException("Ingrese un empleado");
                         miEmpleado = empresa.getPlanilla();
 
+                        boolean verificarExiste=false;
                         for (Empleado e : miEmpleado)
                             if (e.getNombre().equals(nombre)) {
+                                verificarExiste=true;
                                 double sueldoReal = CalculadoraImpuestos.calcularPago(e);
                                 JOptionPane.showMessageDialog(null, "La cantidad de dinero que se le debera pagar a " +
                                         nombre + " es $:" + sueldoReal);
                             }
+                        if(!verificarExiste)
+                            throw new InputErrorException("Error!Empleado inexistente");
 
-                    }catch (EmptyListException ex){
+                    }catch (EmptyListException|EmptyInputException|InputErrorException ex){
                         JOptionPane.showMessageDialog(null,ex);
                     }
-                    break;
 
+                    break;
                 case '5':
                     CalculadoraImpuestos.mostrarTotales();
+
                     break;
-                case '0': salir=true;
+                case '0':
+                    salir=true;
+                    JOptionPane.showMessageDialog(null,"Contrate mas gente! Adios");
+
                     break;
 
                 default: JOptionPane.showMessageDialog(null, "Opcion incorrecta!");
@@ -136,5 +120,60 @@ public class Main {
         }while(!salir);
 
 
+    }
+    //Se paso el case 1 a una funcion que entorpecia la lectura del codigo en el Main
+    public static Empleado agregarEmpleado() {
+        String nombre="",puesto="";
+        double salario=0;
+        int mesesContrato=0,extension=0;
+        try {
+            nombre = JOptionPane.showInputDialog(null, "Nombre", "Ej: Carlos Roberto Cortez Amaya");
+            if(nombre.equals(""))
+                throw new EmptyInputException("Error!NO ha ingresado datos ");
+
+            String[] opciones = {"Servicio Profesional", "Plaza Fija"};
+            int aux = JOptionPane.showOptionDialog(null, "Tipo de trabajador", "Agregar empleado", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+
+            if (aux == 0) {
+                puesto = JOptionPane.showInputDialog(null, "Puesto de trabajo");
+                if(puesto.equals("")) throw new EmptyInputException("Error!NO ha ingresado datos ");
+
+                salario = Double.parseDouble(JOptionPane.showInputDialog(null, "Salario en dólares ($)", "Ej: 400"));
+                if(salario<0) throw new NegativeNumberException("Salario no admitido");
+
+                mesesContrato = Integer.parseInt(JOptionPane.showInputDialog(null, "Meses de contrato"));
+                return new ServicioProfesional(nombre, puesto, salario, mesesContrato);
+            } else {
+                puesto = JOptionPane.showInputDialog(null, "Puesto de trabajo");
+                if(puesto.equals("")) throw new EmptyInputException("Error!NO ha ingresado datos ");
+
+                salario = Double.parseDouble(JOptionPane.showInputDialog(null, "Salario en dólares ($)", "Ej: 400"));
+                if(salario<0) throw new NegativeNumberException("Salario no admitido");
+
+                extension = Integer.parseInt(JOptionPane.showInputDialog(null, "Extensión del contrato"));
+                return new PlazaFija(nombre, puesto, salario, extension);
+            }
+        }catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(null, "Error! Ingrese un valor numérico");
+        }
+        catch (NegativeNumberException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        catch (EmptyInputException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        return null;
+    }
+
+    public static Documento agregarDocumento(String nombre){
+        String numero="";
+        try {
+            numero = JOptionPane.showInputDialog(null, "DUI", "06096092");
+            if (numero.equals("")) throw new EmptyInputException("Error!NO ha ingresado datos ");
+        }
+        catch (EmptyInputException ex){
+            JOptionPane.showMessageDialog(null,ex);
+        }
+        return  new Documento(nombre, numero);
     }
 }
