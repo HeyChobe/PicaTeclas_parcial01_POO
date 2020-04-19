@@ -59,6 +59,11 @@ public class Main {
 
                         empresa.quitEmpleado(nombre);
                         empleado.removeDocumento(nombre);
+
+                        //Verifica el si la lista es vacía, para que el caso 3 pueda tirar lanzar
+                        //la excepción una vez borrado un empleado
+                        if(miEmpleado.isEmpty()) empleado=null;
+
                     }
                     catch (InputErrorException|EmptyListException ex){
                         JOptionPane.showMessageDialog(null, ex);
