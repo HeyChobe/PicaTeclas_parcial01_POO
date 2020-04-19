@@ -18,10 +18,11 @@ public class ServicioProfesional extends Empleado{
         this.mesesContrato = mesesContrato;
     }
 
+    //Metodo que muestra el documento correspondiente en el toString
     public String mostrarDocs(){
         String mensaje="";
         for(Documento d : documentos){
-            mensaje+=d.getNombre()+"/"+d.getNumero();
+            mensaje+="Nombre:"+d.getNombre()+", DUI:"+d.getNumero();
         }
         return mensaje;
     }
@@ -29,11 +30,11 @@ public class ServicioProfesional extends Empleado{
     @Override
     public String toString() {
         return "ServicioProfesional{" +
-                "mesesContrato=" + mesesContrato +
-                ", nombre='" + nombre + '\'' +
-                ", puesto='" + puesto + '\'' +
-                ", salario=" + salario + "documentos=" +
-                mostrarDocs() +
+                "Contrato:" + mesesContrato + "meses" +
+                ", Nombre:" + nombre +
+                ", Puesto:" + puesto +
+                ", Salario: $" + salario +
+                "\n\tDocumentos:" + mostrarDocs() +
                 '}';
     }
 }

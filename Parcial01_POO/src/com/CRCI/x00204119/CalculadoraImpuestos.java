@@ -39,7 +39,7 @@ public class CalculadoraImpuestos {
         return SalarioReal;
  }
     public static void mostrarTotales(){
-        JOptionPane.showConfirmDialog(null,"Los impuestos presentes son: \n " +
+        JOptionPane.showMessageDialog(null,"Los impuestos presentes son: \n" +
                 "ISSS: $" + totalISSS + "\nAFP: $"+ totalAFP+ "\nRenta: $"+ totalRenta);
     }
 }

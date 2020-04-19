@@ -1,6 +1,6 @@
 package com.CRCI.x00204119;
 
-import javax.swing.*;
+
 import java.util.ArrayList;
 
 public class Empresa {
@@ -23,11 +23,6 @@ public class Empresa {
         Empleado empleado=null;
         String empleadoFinal=nombreEmpleado;
         Planilla.removeIf(obj-> obj.getNombre().equals(empleadoFinal));
-    }
-
-    public void mostrarEmpleados(){
-        for(Empleado aux : Planilla)
-            JOptionPane.showMessageDialog(null, aux);
     }
 
     public ArrayList<Empleado> getPlanilla() {

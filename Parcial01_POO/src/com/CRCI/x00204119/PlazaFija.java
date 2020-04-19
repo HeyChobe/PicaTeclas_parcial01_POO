@@ -16,21 +16,23 @@ public class PlazaFija extends Empleado {
         this.extension = extension;
     }
 
+    //Metodo que muestra el documento correspondiente en el toString
     public String mostrarDocs(){
         String mensaje="";
         for(Documento d : documentos){
-            mensaje+=d.getNombre()+"/"+d.getNumero();
+            mensaje+="Nombre:"+d.getNombre()+", DUI:"+d.getNumero();
         }
         return mensaje;
     }
 
     @Override
     public String toString() {
-        return "PlazaFija{" +
-                "extension=" + extension +
-                ", nombre='" + nombre + '\'' +
-                ", puesto='" + puesto + '\'' +
-                ", salario=" + salario + "documentos=" + mostrarDocs() +
+        return "ServicioProfesional{" +
+                "Extensión:" + extension + "meses" +
+                ", Nombre:" + nombre +
+                ", Puesto:" + puesto +
+                ", Salario: $" + salario +
+                "\n\tDocumentos:" + mostrarDocs() +
                 '}';
     }
 }
