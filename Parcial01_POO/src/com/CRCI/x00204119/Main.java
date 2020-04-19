@@ -22,12 +22,12 @@ public class Main {
         do {
             nombreEmpresa = JOptionPane.showInputDialog(null, "Nombre de la empresa");
             try {
-                if (nombreEmpresa.equals("")) throw new EmptyInputException("Error!NO ha ingresado datos ");
+                if (nombreEmpresa.equals("")||verificarEntrada(nombreEmpresa)) throw new EmptyInputException("Error!NO ha ingresado datos ");
                 empresa = new Empresa(nombreEmpresa);
             } catch (EmptyInputException ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
-        }while (nombreEmpresa.equals(""));
+        }while (nombreEmpresa.equals("")||verificarEntrada(nombreEmpresa));
 
 
         do{
@@ -86,7 +86,7 @@ public class Main {
                             throw new EmptyListException("Aún no has contratado empleados");
 
                         nombre = JOptionPane.showInputDialog(null, "Empleado: ");
-                        if(nombre.equals(""))
+                        if(nombre.equals("")||verificarEntrada(nombre))
                             throw new EmptyInputException("Ingrese un empleado");
                         miEmpleado = empresa.getPlanilla();
 
@@ -107,7 +107,7 @@ public class Main {
 
                     break;
                 case '5':
-                    CalculadoraImpuestos.mostrarTotales();
+                    JOptionPane.showMessageDialog(null,CalculadoraImpuestos.mostrarTotales());
 
                     break;
                 case '0':
@@ -129,7 +129,7 @@ public class Main {
         int mesesContrato=0,extension=0;
         try {
             nombre = JOptionPane.showInputDialog(null, "Nombre", "Ej: Carlos Roberto Cortez Amaya");
-            if (nombre.equals(""))
+            if (nombre.equals("")||verificarEntrada(nombre))
                 throw new EmptyInputException("Error! No ha ingresado datos ");
 
             String[] opciones = {"Servicio Profesional", "Plaza Fija"};
@@ -137,16 +137,16 @@ public class Main {
 
             if (aux == 0) {
                 puesto = JOptionPane.showInputDialog(null, "Puesto de trabajo");
-                if (puesto.equals("")) throw new EmptyInputException("Error! No ha ingresado datos ");
+                if (puesto.equals("")||verificarEntrada(puesto)) throw new EmptyInputException("Error! No ha ingresado datos ");
 
                 salario = Double.parseDouble(JOptionPane.showInputDialog(null, "Salario en dólares ($)", "Ej: 400"));
-                if (salario < 0) throw new NegativeNumberException("Salario no admitido");
+                if (salario < 0 ) throw new NegativeNumberException("Salario no admitido");
 
                 mesesContrato = Integer.parseInt(JOptionPane.showInputDialog(null, "Meses de contrato"));
                 return new ServicioProfesional(nombre, puesto, salario, mesesContrato);
             } else {
                 puesto = JOptionPane.showInputDialog(null, "Puesto de trabajo");
-                if (puesto.equals("")) throw new EmptyInputException("Error! No ha ingresado datos ");
+                if (puesto.equals("")||verificarEntrada(puesto)) throw new EmptyInputException("Error! No ha ingresado datos ");
 
                 salario = Double.parseDouble(JOptionPane.showInputDialog(null, "Salario en dólares ($)", "Ej: 400"));
                 if (salario < 0) throw new NegativeNumberException("Salario no admitido");
@@ -174,5 +174,15 @@ public class Main {
             JOptionPane.showMessageDialog(null,ex);
         }
         return  new Documento(nombre, numero);
+    }
+    /* Se creo esta funcion para verificar que el usuario no meta "        " una cadena de este estilo, ya que java
+    lo considera una cadena
+     */
+    public static boolean verificarEntrada(String miPalabra){
+        int auxCounter=1; //Necesario para que el substring vaya letra por letra, ya que no me dejo con un charAt
+        for(int i=0;i<miPalabra.length();i++)
+            if(!miPalabra.substring(i,i+auxCounter).equals(" "))
+                return false;
+        return true;
     }
 }
