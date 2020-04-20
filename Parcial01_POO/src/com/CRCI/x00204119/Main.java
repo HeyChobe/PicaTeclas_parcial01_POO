@@ -12,39 +12,44 @@ public class Main {
         ArrayList<Empleado> miEmpleado = new ArrayList<>();
 
         boolean salir=false;
-        int mesesContrato=0, extension=0;
+        int mesesContrato=0, extension=0, op=0;
         String menu="Qué desea hacer?\n1) Agregar Empleado\n2) Despedir Empleado\n3) Ver lista de empleados\n" +
                 "4) Calcular suelo\n5) Mostrar totales\n0) Salir";
         String nombre="", nombreEmpresa="", puesto="", numero="";
         double salario=0;
-        char op='0';
 
         do {
             nombreEmpresa = JOptionPane.showInputDialog(null, "Nombre de la empresa");
             try {
                 if (nombreEmpresa.equals("")||verificarEntrada(nombreEmpresa)) throw new EmptyInputException("Error!NO ha ingresado datos ");
                 empresa = new Empresa(nombreEmpresa);
-            } catch (EmptyInputException ex) {
+
+            }
+            catch (EmptyInputException ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
         }while (nombreEmpresa.equals("")||verificarEntrada(nombreEmpresa));
 
 
         do{
-            op=JOptionPane.showInputDialog(null, menu).charAt(0);
-            switch (op){
-                case '1':
+            try{
+            op = Integer.parseInt(JOptionPane.showInputDialog(null, menu));
+
+            switch (op) {
+                case 1:
                     try {
                         empleado = agregarEmpleado();
                         empleado.addDocumento(agregarDocumento(empleado.getNombre()));
                         empresa.addEmpleado(empleado);
-                    } catch (Exception e){ }
+                    } catch (Exception e) {
+                    }
                     break;
-                case '2':
+
+                case 2:
                     try {
                         boolean existe = false;
 
-                        if(empleado==null)
+                        if (empleado == null)
                             throw new EmptyListException("Aún no has contratado empleados");
 
                         nombre = JOptionPane.showInputDialog(null, "Empleado a despedir");
@@ -62,67 +67,70 @@ public class Main {
 
                         //Verifica el si la lista es vacía, para que el caso 3 pueda tirar lanzar
                         //la excepción una vez borrado un empleado
-                        if(miEmpleado.isEmpty()) empleado=null;
+                        if (miEmpleado.isEmpty()) empleado = null;
 
-                    }
-                    catch (InputErrorException|EmptyListException ex){
+                    } catch (InputErrorException | EmptyListException ex) {
                         JOptionPane.showMessageDialog(null, ex);
                     }
                     break;
 
-                case '3':
+                case 3:
                     try {
-                        if(empleado==null)
+                        if (empleado == null)
                             throw new EmptyListException("Aún no has contratado empleados");
 
                         miEmpleado = empresa.getPlanilla();
 
                         for (Empleado emp : miEmpleado)
                             JOptionPane.showMessageDialog(null, emp);
-                    }
-                    catch (EmptyListException ex){
-                        JOptionPane.showMessageDialog(null,ex);
+                    } catch (EmptyListException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
                     }
                     break;
 
-                case '4':
+                case 4:
                     try {
-                        if(empleado==null)
+                        if (empleado == null)
                             throw new EmptyListException("Aún no has contratado empleados");
 
                         nombre = JOptionPane.showInputDialog(null, "Empleado: ");
-                        if(nombre.equals("")||verificarEntrada(nombre))
+                        if (nombre.equals("") || verificarEntrada(nombre))
                             throw new EmptyInputException("Ingrese un empleado");
                         miEmpleado = empresa.getPlanilla();
 
-                        boolean verificarExiste=false;
+                        boolean verificarExiste = false;
                         for (Empleado e : miEmpleado)
                             if (e.getNombre().equals(nombre)) {
-                                verificarExiste=true;
+                                verificarExiste = true;
                                 double sueldoReal = CalculadoraImpuestos.calcularPago(e);
                                 JOptionPane.showMessageDialog(null, "La cantidad de dinero que se le deberá pagar a " +
                                         nombre + " es $:" + sueldoReal);
                             }
-                        if(!verificarExiste)
+                        if (!verificarExiste)
                             throw new InputErrorException("Error! El empleado no existe");
 
-                    }catch (EmptyListException|EmptyInputException|InputErrorException ex){
-                        JOptionPane.showMessageDialog(null,ex);
+                    } catch (EmptyListException | EmptyInputException | InputErrorException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
                     }
-
-                    break;
-                case '5':
-                    JOptionPane.showMessageDialog(null,CalculadoraImpuestos.mostrarTotales());
-
-                    break;
-                case '0':
-                    salir=true;
-                    JOptionPane.showMessageDialog(null,"Contrate mas gente! Adios");
-
                     break;
 
-                default: JOptionPane.showMessageDialog(null, "Opcion incorrecta!");
+                case 5:
+                    JOptionPane.showMessageDialog(null, CalculadoraImpuestos.mostrarTotales());
+                    break;
+
+                case 0:
+                    salir = true;
+                    JOptionPane.showMessageDialog(null, "Contrate mas gente! Adios");
+                    break;
+
+                default:
+                    JOptionPane.showMessageDialog(null, "Opcion incorrecta!");
+                    break;
             }
+            }catch (Exception ex){
+                JOptionPane.showMessageDialog(null,"No has escrito nada");
+            }
+
         }while(!salir);
 
 
