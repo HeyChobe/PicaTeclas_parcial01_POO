@@ -12,7 +12,7 @@ public class Main {
         ArrayList<Empleado> miEmpleado = new ArrayList<>();
 
         boolean salir=false;
-        int mesesContrato=0, extension=0, op=0;
+        int mesesContrato=0, extension=0;
         String menu="Qué desea hacer?\n1) Agregar Empleado\n2) Despedir Empleado\n3) Ver lista de empleados\n" +
                 "4) Calcular suelo\n5) Mostrar totales\n0) Salir";
         String nombre="", nombreEmpresa="", puesto="", numero="",op="";
