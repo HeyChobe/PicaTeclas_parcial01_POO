@@ -15,7 +15,7 @@ public class Main {
         int mesesContrato=0, extension=0, op=0;
         String menu="Qué desea hacer?\n1) Agregar Empleado\n2) Despedir Empleado\n3) Ver lista de empleados\n" +
                 "4) Calcular suelo\n5) Mostrar totales\n0) Salir";
-        String nombre="", nombreEmpresa="", puesto="", numero="";
+        String nombre="", nombreEmpresa="", puesto="", numero="",op="";
         double salario=0;
 
         do {
@@ -32,11 +32,11 @@ public class Main {
 
 
         do{
-            try{
-            op = Integer.parseInt(JOptionPane.showInputDialog(null, menu));
+        
+            op = JOptionPane.showInputDialog(null, menu);
 
             switch (op) {
-                case 1:
+                case "1":
                     try {
                         empleado = agregarEmpleado();
                         empleado.addDocumento(agregarDocumento(empleado.getNombre()));
@@ -45,7 +45,7 @@ public class Main {
                     }
                     break;
 
-                case 2:
+                case "2":
                     try {
                         boolean existe = false;
 
@@ -74,7 +74,7 @@ public class Main {
                     }
                     break;
 
-                case 3:
+                case "3":
                     try {
                         if (empleado == null)
                             throw new EmptyListException("Aún no has contratado empleados");
@@ -88,7 +88,7 @@ public class Main {
                     }
                     break;
 
-                case 4:
+                case "4":
                     try {
                         if (empleado == null)
                             throw new EmptyListException("Aún no has contratado empleados");
@@ -114,11 +114,11 @@ public class Main {
                     }
                     break;
 
-                case 5:
+                case "5":
                     JOptionPane.showMessageDialog(null, CalculadoraImpuestos.mostrarTotales());
                     break;
 
-                case 0:
+                case "0":
                     salir = true;
                     JOptionPane.showMessageDialog(null, "Contrate mas gente! Adios");
                     break;
@@ -126,9 +126,6 @@ public class Main {
                 default:
                     JOptionPane.showMessageDialog(null, "Opcion incorrecta!");
                     break;
-            }
-            }catch (Exception ex){
-                JOptionPane.showMessageDialog(null,"No has escrito nada");
             }
 
         }while(!salir);
